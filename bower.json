@@ -1,0 +1,47 @@
+{
+  "name": "tpa-webtrekk",
+  "version": "1.0.0",
+  "description": "Web component for connecting your applications web analytics iron-signal events to WebTrekk",
+  "private": true,
+  "authors": [
+    "Rik van de Ven"
+  ],
+  "keywords": [
+    "web-components",
+    "polymer",
+    "webtrekk"
+  ],
+  "main": "tpa-webtrekk.html",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ING-Group/tpa-webtrekk.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/ING-Group/tpa-webtrekk",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "iron-signals": "PolymerElements/iron-signals#^1.0.3"
+  },
+  "devDependencies": {
+    "iron-component-page": "polymerelements/iron-component-page#^1.0.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.0.0",
+    "test-fixture": "polymerelements/test-fixture#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
+    "tpa-styles": "https://github.com/ING-Group/tpa-styles.git",
+    "tpa-icons": "https://github.com/ING-Group/tpa-icons.git",
+    "iron-form": "PolymerElements/iron-form",
+    "paper-button": "PolymerElements/paper-button",
+    "paper-icon-button": "PolymerElements/paper-icon-button",
+    "paper-input": "PolymerElements/paper-input",
+    "paper-card": "PolymerElements/paper-card",
+    "paper-radio-group": "PolymerElements/paper-radio-group",
+    "paper-radio-button": "PolymerElements/paper-radio-button"
+  }
+}

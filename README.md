@@ -1,2 +1,2 @@
 # tpa-webtrekk
-Webtrekk analytics component
+Webtrekk based analytics component

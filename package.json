@@ -1,0 +1,27 @@
+{
+  "name": "tpa-webtrekk",
+  "version": "1.0.0",
+  "description": "Web component for connecting your applications web analytics iron-signal events to WebTrekk",
+  "main": "wct.conf.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ING-Group/tpa-webtrekk.git"
+  },
+  "author": "Rik van de Ven",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ING-Group/tpa-webtrekk/issues"
+  },
+  "homepage": "https://github.com/ING-Group/tpa-webtrekk#readme",
+  "devDependencies": {
+    "drakov": "^1.0.0",
+    "gulp": "^3.9.1",
+    "web-component-tester-istanbul": "^0.10.0"
+  }
+}

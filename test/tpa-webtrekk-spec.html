@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <script src="../../webcomponentsjs/webcomponents.min.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../../polymer/polymer.html">
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../tpa-webtrekk.html">
+  <link rel="import" href="../../iron-meta/iron-meta.html">
+
+</head>
+<body>
+<test-fixture id="fixture">
+  <template>
+    <tpa-webtrekk></tpa-webtrekk>
+  </template>
+</test-fixture>
+
+<script>
+  describe("initial transaction load", function () {
+    var $el = document.querySelector('tpa-webtrekk');
+    var sandbox = sinon.sandbox.create();
+
+    beforeEach(function (done) {
+      sandbox.restore();
+      var fixture = document.getElementById('fixture');
+      fixture.restore();
+      $el = fixture.create();
+      flush(done);
+    });
+
+    it("should call Webtrekk sendinfo after a signal", sinon.test(function(){
+      var stub = this.stub($el.wt, "sendinfo");
+      $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test' }});
+      sinon.assert.calledOnce(stub);
+    }));
+
+    it("should call Webtrekk sendinfo with different pagenames for different page signals", sinon.test(function(){
+      var stub = this.stub($el.wt, "sendinfo");
+
+      $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test' }});
+      $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test2' }});
+
+      sinon.assert.calledWith(stub, {contentId: "[tpa:demo:test]"});
+      sinon.assert.calledWith(stub, {contentId: "[tpa:demo:test2]"});
+      sinon.assert.calledTwice(stub);
+      stub.restore();
+    }));
+
+    it("should call Webtrekk sendinfo with different category for different category signals", sinon.test(function(){
+      var stub = this.stub($el.wt, "sendinfo");
+
+      $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test' }});
+      $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo2', pagename: 'test' }});
+
+      sinon.assert.calledWith(stub, {contentId: "[tpa:demo:test]"});
+      sinon.assert.calledWith(stub, {contentId: "[tpa:demo2:test]"});
+      sinon.assert.calledTwice(stub);
+    }));
+
+  });
+</script>
+</body>
+</html>

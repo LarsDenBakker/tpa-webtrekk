@@ -1,0 +1,54 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="tpa-webtrekk-loader.html">
+<link rel="import" href="../iron-signals/iron-signals.html">
+
+<!--
+
+`tpa-webtrekk` is for connecting your applications web analytics iron-signal events to WebTrekk
+
+    <tpa-webtrekk></tpa-webtrekk>
+
+Example:
+
+    <tpa-webtrekk></tpa-webtrekk>
+
+@element tpa-webtrekk
+@demo demo/index.html
+-->
+<dom-module id="tpa-webtrekk">
+    <template>
+        <iron-signals on-iron-signal-event-pageload="onEventPageload"></iron-signals>
+    </template>
+</dom-module>
+<script>
+
+    webtrekkConfig = {
+        trackId: "105490315397978",
+        trackDomain: "mon.ingservices.nl",
+        domain: "www.tpabootstrap.net",
+        cookie: "1",
+        tabBrowsing: true,
+        execCDB: false,
+        execRTA: false
+    };
+
+            Polymer({
+
+                is: "tpa-webtrekk",
+
+                /**
+                 * The initialized WebTrekk class for communicating events
+                 */
+                wt: new webtrekkV3({
+                    linkTrack: "link",
+                    linkTrackAttribute: "id",
+                    heatmap: "1",
+                    linkTrackDownloads: "zip;pdf;doc"
+                }),
+
+                onEventPageload: function (data) {
+                    this.wt.sendinfo({contentId: "[tpa:" + data.detail.category + ":" + data.detail.pagename + "]"});
+                }
+
+            })
+</script>

@@ -1,0 +1,75 @@
+<!doctype html>
+
+<html>
+<head>
+    <title>tpa-webtrekk demo</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../tpa-styles/tpa-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+
+    <link rel="import" href="../../iron-form/iron-form.html">
+    <link rel="import" href="../../tpa-font/tpa-font.html">
+    <link rel="import" href="../../tpa-icons/tpa-icons.html">
+    <link rel="import" href="../../tpa-styles/tpa-styles.html">
+    <link rel="import" href="../../paper-button/paper-button.html">
+    <link rel="import" href="../../paper-input/paper-input.html">
+    <link rel="import" href="../../paper-radio-group/paper-radio-group.html">
+    <link rel="import" href="../../paper-radio-button/paper-radio-button.html">
+    <link rel="import" href="../../paper-card/paper-card.html">
+
+    <link rel="import" href="../tpa-webtrekk.html">
+
+</head>
+<body unresolved>
+<div class="vertical-section-container centered">
+    <h3>Use the form below to see the WebTrekk component working</h3>
+
+        <template is="dom-bind" id="scope">
+
+            <tpa-webtrekk></tpa-webtrekk>
+
+            <paper-card header="WebTrekk Demo">
+                <div class="card-content">
+                    Use this form to send events to WebTrekk. The WebTrekk component listens to iron-signal events. Use the browsers developer tools to monitor net traffic for monitoring calls going to WebTrekk
+                </div>
+
+
+                <form is="iron-form" id="form" method="post" action="/form/handler">
+
+                    <div class="card-content">
+                        <paper-input id="category" name="category" label="Category" required></paper-input>
+                        <paper-input id="pagename" name="pagename" label="Page name" required></paper-input>
+
+                        <paper-radio-group selected="page">
+                            <paper-radio-button name="page">Page Load</paper-radio-button>
+                            <paper-radio-button name="click">Click Event</paper-radio-button>
+                        </paper-radio-group>
+
+                        <div class="card-actions">
+                            <paper-button raised class="primary" on-tap="submit">Send Signal</paper-button>
+                        </div>
+
+                    </div>
+                </form>
+            </paper-card>
+        </template>
+
+    <script type="text/javascript">
+        HTMLImports.whenReady(function() {
+
+            var scope = document.querySelector('#scope');
+
+            scope.submit = function() {
+
+                document.querySelector('#category').fire('iron-signal', {name: 'event-pageload', data: { category: document.querySelector('#category').nodeValue, pagename: document.querySelector('#pagename')}});
+            };
+
+        });
+    </script>
+
+</div>
+</body>
+</html>
