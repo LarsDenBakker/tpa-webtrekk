@@ -1,0 +1,69 @@
+<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+<link rel="import" href="../../iron-form/iron-form.html">
+<link rel="import" href="../../tpa-font/tpa-font.html">
+<link rel="import" href="../../tpa-icons/tpa-icons.html">
+<link rel="import" href="../../tpa-styles/tpa-styles.html">
+<link rel="import" href="../../paper-button/paper-button.html">
+<link rel="import" href="../../paper-input/paper-input.html">
+<link rel="import" href="../../paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../../paper-radio-button/paper-radio-button.html">
+<link rel="import" href="../../paper-card/paper-card.html">
+
+<link rel="import" href="../tpa-webtrekk.html">
+
+<dom-module id="tpa-webtrekk-form">
+    <template>
+
+        <tpa-webtrekk></tpa-webtrekk>
+
+        <paper-card header="WebTrekk Demo">
+            <div class="card-content">
+                The WebTrekk component listens to iron-signal events - the form below will trigger iron-signal events in the appropriate format for web analytics.
+                The WebTrekk component put on this page will respond to the events by communicating them to WebTrekk.
+                <br /><br/>
+                Use the browsers developer tools to monitor net traffic for monitoring calls going to WebTrekk
+            </div>
+
+            <form is="iron-form" id="demoform" method="get" action="/" on-change="doValidate">
+
+                <div class="card-content">
+                    <paper-input id="category" name="category" label="Category" value="{{category}}" required auto-validate></paper-input>
+
+                    <paper-radio-group selected="page">
+                        <paper-radio-button name="page">Page Load</paper-radio-button>
+                        <paper-radio-button name="click" disabled>Click Event</paper-radio-button>
+                    </paper-radio-group>
+
+                    <paper-input id="pagename" name="pagename" label="Page name" value="{{pagename}}" required auto-validate></paper-input>
+
+                    <div class="card-actions">
+                        <paper-button raised id="formSubmit" class="primary" on-tap="submit" disabled>Send Signal</paper-button>
+                    </div>
+
+                </div>
+            </form>
+        </paper-card>
+
+    </template>
+    <script>
+
+        Polymer({
+            is:"tpa-webtrekk-form",
+
+            properties: {
+                category: String,
+                pagename: String
+            },
+
+            doValidate: function() {
+                // Validate the entire form to see if we should enable the `Submit` button.
+                this.$.formSubmit.disabled = !this.$.demoform.validate();
+            },
+
+            submit: function() {
+                this.fire('iron-signal', {name: 'event-pageload', data: { category: this.category, pagename: this.pagename}});
+            }
+        });
+    </script>
+</dom-module>
