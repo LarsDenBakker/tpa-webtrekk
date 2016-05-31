@@ -30,12 +30,12 @@
                 <div class="card-content">
                     <paper-input id="category" name="category" label="Category" value="{{category}}" required auto-validate></paper-input>
 
-                    <paper-radio-group selected="page">
+                    <paper-radio-group name="tpe" selected='page', selected-item="{{tpe}}">
                         <paper-radio-button name="page">Page Load</paper-radio-button>
-                        <paper-radio-button name="click" disabled>Click Event</paper-radio-button>
+                        <paper-radio-button name="click">Click Event</paper-radio-button>
                     </paper-radio-group>
 
-                    <paper-input id="pagename" name="pagename" label="Page name" value="{{pagename}}" required auto-validate></paper-input>
+                    <paper-input id="id" name="id" label="{{labelforid}}" value="{{id}}" required auto-validate></paper-input>
 
                     <div class="card-actions">
                         <paper-button raised id="formSubmit" class="primary" on-tap="submit" disabled>Send Signal</paper-button>
@@ -53,7 +53,9 @@
 
             properties: {
                 category: String,
-                pagename: String
+                id: String,
+                labelforid: {type: String, value: 'Page Name'},
+                tpe: {type: Object, value: 'page', notify: true, observer: 'typeChanged'}
             },
 
             doValidate: function() {
@@ -61,8 +63,16 @@
                 this.$.formSubmit.disabled = !this.$.demoform.validate();
             },
 
+            typeChanged: function() {
+                if (this.tpe && this.tpe.name == 'click') {
+                    this.labelforid = 'Event Data';
+                } else {
+                    this.labelforid = 'Page Name';
+                }
+            },
+
             submit: function() {
-                this.fire('iron-signal', {name: 'event-pageload', data: { category: this.category, pagename: this.pagename}});
+                this.fire('iron-signal', {name: 'event-pageload', data: { category: this.category, pagename: this.id}});
             }
         });
     </script>
