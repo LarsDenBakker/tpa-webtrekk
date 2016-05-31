@@ -23,9 +23,9 @@ Example:
 <script>
 
     webtrekkConfig = {
-        trackId: "105490315397978",
-        trackDomain: "mon.ingservices.nl",
-        domain: "www.tpabootstrap.net",
+        trackId: "105490315397978", //this might be different per app/country/...
+        trackDomain: "mon.ingservices.nl", //this might be different per app/country/...
+        domain: "www.tpabootstrap.net", //this might be different per app/country/...
         cookie: "1",
         tabBrowsing: true,
         execCDB: false,
@@ -47,7 +47,7 @@ Example:
                 }),
 
                 onEventPageload: function (data) {
-                    this.wt.sendinfo({contentId: "[tpa:" + data.detail.category + ":" + data.detail.pagename + "]"});
+                    this.wt.sendinfo({contentId: "tpa:" + data.detail.category + ":" + data.detail.pagename});
                 }
 
             })

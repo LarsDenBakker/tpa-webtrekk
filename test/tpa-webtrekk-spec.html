@@ -48,8 +48,8 @@
       $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test' }});
       $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test2' }});
 
-      sinon.assert.calledWith(stub, {contentId: "[tpa:demo:test]"});
-      sinon.assert.calledWith(stub, {contentId: "[tpa:demo:test2]"});
+      sinon.assert.calledWith(stub, {contentId: "tpa:demo:test"});
+      sinon.assert.calledWith(stub, {contentId: "tpa:demo:test2"});
       sinon.assert.calledTwice(stub);
       stub.restore();
     }));
@@ -60,8 +60,8 @@
       $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test' }});
       $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo2', pagename: 'test' }});
 
-      sinon.assert.calledWith(stub, {contentId: "[tpa:demo:test]"});
-      sinon.assert.calledWith(stub, {contentId: "[tpa:demo2:test]"});
+      sinon.assert.calledWith(stub, {contentId: "tpa:demo:test"});
+      sinon.assert.calledWith(stub, {contentId: "tpa:demo2:test"});
       sinon.assert.calledTwice(stub);
     }));
 
