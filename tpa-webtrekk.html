@@ -17,38 +17,54 @@ Example:
 -->
 <dom-module id="tpa-webtrekk">
     <template>
-        <iron-signals on-iron-signal-event-pageload="onEventPageload"></iron-signals>
+
+        <iron-signals on-iron-signal-businessmonitoring-send-page-visit="onPageVisit"></iron-signals>
+        <iron-signals on-iron-signal-businessmonitoring-send-action="onAction"></iron-signals>
+        <iron-signals on-iron-signal-businessmonitoring-send-error-message="onErrorMessage"></iron-signals>
+        <iron-signals on-iron-signal-businessmonitoring-send-form-step="onFormStep"></iron-signals>
+        <iron-signals on-iron-signal-businessmonitoring-send-search-action="onSearchAction "></iron-signals>
+
     </template>
 </dom-module>
 <script>
 
-    webtrekkConfig = {
-        trackId: "105490315397978", //this might be different per app/country/...
-        trackDomain: "mon.ingservices.nl", //this might be different per app/country/...
-        domain: "www.tpabootstrap.net", //this might be different per app/country/...
-        cookie: "1",
-        tabBrowsing: true,
-        execCDB: false,
-        execRTA: false
-    };
+    (function() {
 
-            Polymer({
+        webtrekkConfig = {
+            trackId: "105490315397978", //this might be different per app/country/...
+            trackDomain: "mon.ingservices.nl", //this might be different per app/country/...
+            domain: "www.tpabootstrap.net", //this might be different per app/country/...
+            cookie: "1",
+            tabBrowsing: true,
+            execCDB: false,
+            execRTA: false,
+            heatmap: 0
+        };
 
-                is: "tpa-webtrekk",
+        /**
+         * The initialized WebTrekk class for communicating events
+         */
+        var wt = new webtrekkV3({
+            linkTrack: "link",
+            linkTrackAttribute: "id",
+            heatmap: "1",
+            linkTrackDownloads: "zip;pdf;doc"
+        });
 
-                /**
-                 * The initialized WebTrekk class for communicating events
-                 */
-                wt: new webtrekkV3({
-                    linkTrack: "link",
-                    linkTrackAttribute: "id",
-                    heatmap: "1",
-                    linkTrackDownloads: "zip;pdf;doc"
-                }),
+        Polymer({
 
-                onEventPageload: function (data) {
-                    this.wt.sendinfo({contentId: "tpa:" + data.detail.category + ":" + data.detail.pagename});
-                }
+            is: "tpa-webtrekk",
 
-            })
+            onPageVisit: function (data) {
+                wt.contentId = "tpa:" + data.detail.category + ":" + data.detail.pagename;
+                wt.sendinfo();
+            },
+
+            onAction: function (data) {
+                wt.sendinfo({linkId: data.detail.action});
+            }
+
+
+        })
+    })();
 </script>

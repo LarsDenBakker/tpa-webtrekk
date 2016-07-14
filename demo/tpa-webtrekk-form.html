@@ -28,12 +28,14 @@
             <form is="iron-form" id="demoform" method="get" action="/" on-change="doValidate">
 
                 <div class="card-content">
-                    <paper-input id="category" name="category" label="Category" value="{{category}}" required auto-validate></paper-input>
 
                     <paper-radio-group name="tpe" selected='page', selected-item="{{tpe}}">
                         <paper-radio-button name="page">Page Load</paper-radio-button>
-                        <paper-radio-button name="click">Click Event</paper-radio-button>
+                        <paper-radio-button name="event">Action / Event</paper-radio-button>
                     </paper-radio-group>
+
+
+                    <paper-input id="category" name="category" label="Category" value="{{category}}" required auto-validate></paper-input>
 
                     <paper-input id="id" name="id" label="{{labelforid}}" value="{{id}}" required auto-validate></paper-input>
 
@@ -64,7 +66,7 @@
             },
 
             typeChanged: function() {
-                if (this.tpe && this.tpe.name == 'click') {
+                if (this.tpe && this.tpe.name == 'event') {
                     this.labelforid = 'Event Data';
                 } else {
                     this.labelforid = 'Page Name';
@@ -72,7 +74,14 @@
             },
 
             submit: function() {
-                this.fire('iron-signal', {name: 'event-pageload', data: { category: this.category, pagename: this.id}});
+                if (this.tpe && this.tpe.name == 'event') {
+                    this.fire('iron-signal', {name: 'businessmonitoring-send-action', data: { action: this.id }});
+                } else {
+                    this.fire('iron-signal', {name: 'businessmonitoring-send-page-visit', data: { category: this.category, pagename: this.id}});
+                }
+
+
+
             }
         });
     </script>
