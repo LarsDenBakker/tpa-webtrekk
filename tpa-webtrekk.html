@@ -22,7 +22,7 @@ Example:
         <iron-signals on-iron-signal-businessmonitoring-send-action="onAction"></iron-signals>
         <iron-signals on-iron-signal-businessmonitoring-send-error-message="onErrorMessage"></iron-signals>
         <iron-signals on-iron-signal-businessmonitoring-send-form-step="onFormStep"></iron-signals>
-        <iron-signals on-iron-signal-businessmonitoring-send-search-action="onSearchAction "></iron-signals>
+        <iron-signals on-iron-signal-businessmonitoring-send-search-action="onSearchAction"></iron-signals>
 
     </template>
 </dom-module>
@@ -37,8 +37,7 @@ Example:
             cookie: "1",
             tabBrowsing: true,
             execCDB: false,
-            execRTA: false,
-            heatmap: 0
+            execRTA: false
         };
 
         /**
@@ -47,7 +46,6 @@ Example:
         var wt = new webtrekkV3({
             linkTrack: "link",
             linkTrackAttribute: "id",
-            heatmap: "1",
             linkTrackDownloads: "zip;pdf;doc"
         });
 
@@ -62,7 +60,37 @@ Example:
 
             onAction: function (data) {
                 wt.sendinfo({linkId: data.detail.action});
+            },
+
+            onSearchAction: function (data) {
+                wt.sendinfo({internalSearch: data.detail.searchTerm});
+            },
+
+            //The configuration of the parameters in this function is specific for NL...
+            onErrorMessage: function (data) {
+                wt.sendinfo ({
+                    customParameter : {
+                        14 : data.detail.error,
+                        15 : data.detail.errorType
+                    }
+                });
+            },
+
+            //The configuration of the parameters in this function is specific for NL...
+            onFormStep: function (data) {
+                wt.contentId = "tpa:" + data.detail.formId + ":" + data.detail.formId + ":" + data.detail.formStep
+                wt.product = data.detail.formId
+                wt.productQuantity = wt.orderValue = 1
+                wt.productStatus = data.detail.formStatus //Possible values should only be 'view' for starting the form and 'conf' for succesfully finishing the form
+                wt.orderId = data.detail.transactionId //This should either be a generated random, unique value (epoch timestamp + random value) or an actual transactional ID
+                wt.sendinfo ({
+                    customEcommerceParameter : {
+                        6 : data.detail.formOutcome //In case a form has a specific outcome (a customer can either signup for A or B within the same form)
+                    }
+                });
             }
+
+
 
 
         })

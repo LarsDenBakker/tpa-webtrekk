@@ -32,15 +32,35 @@
                     <paper-radio-group name="tpe" selected='page', selected-item="{{tpe}}">
                         <paper-radio-button name="page">Page Load</paper-radio-button>
                         <paper-radio-button name="event">Action / Event</paper-radio-button>
+                        <paper-radio-button name="error">Error</paper-radio-button>
+                        <paper-radio-button name="search">Search Action</paper-radio-button>
+                        <paper-radio-button name="form">Search Action</paper-radio-button>
                     </paper-radio-group>
 
-
-                    <paper-input id="category" name="category" label="Category" value="{{category}}" required auto-validate></paper-input>
-
-                    <paper-input id="id" name="id" label="{{labelforid}}" value="{{id}}" required auto-validate></paper-input>
+                    <template is="dom-if" if="{{isPage(tpe.name)}}" restamp="true">
+                        <paper-input id="category" name="category" label="Category" value="{{category}}" required auto-validate></paper-input>
+                        <paper-input id="pagename" name="pagename" label="Page Name" value="{{pagename}}" required auto-validate></paper-input>
+                    </template>
+                    <template is="dom-if" if="{{isEvent(tpe.name)}}" restamp="true">
+                        <paper-input id="action" name="action" label="Action" value="{{action}}" required auto-validate></paper-input>
+                    </template>
+                    <template is="dom-if" if="{{isError(tpe.name)}}" restamp="true">
+                        <paper-input id="error" name="error" label="Error" value="{{error}}" required auto-validate></paper-input>
+                        <paper-input id="errorType" name="errorType" label="Error Type" value="{{errorType}}" required auto-validate></paper-input>
+                    </template>
+                    <template is="dom-if" if="{{isSearch(tpe.name)}}" restamp="true">
+                        <paper-input id="searchTerm" name="searchTerm" label="Search Term" value="{{searchTerm}}" required auto-validate></paper-input>
+                    </template>
+                    <template is="dom-if" if="{{isForm(tpe.name)}}" restamp="true">
+                        <paper-input id="formId" name="formId" label="Form ID" value="{{formId}}" required auto-validate></paper-input>
+                        <paper-input id="formStep" name="formStep" label="Form Step" value="{{formStep}}" required auto-validate></paper-input>
+                        <paper-input id="formStatus" name="formStatus" label="Form Status" value="{{formStatus}}" required auto-validate></paper-input>
+                        <paper-input id="formTransactionId" name="formTransactionId" label="Transaction ID" value="{{formTransactionId}}" required auto-validate></paper-input>
+                        <paper-input id="formOutcome" name="formOutcome" label="Form Outcome" value="{{formOutcome}}" required auto-validate></paper-input>
+                    </template>
 
                     <div class="card-actions">
-                        <paper-button raised id="formSubmit" class="primary" on-tap="submit" disabled>Send Signal</paper-button>
+                        <paper-button raised id="formSubmit" class="primary" on-tap="submit">Send Signal</paper-button>
                     </div>
 
                 </div>
@@ -55,34 +75,50 @@
 
             properties: {
                 category: String,
-                id: String,
-                labelforid: {type: String, value: 'Page Name'},
-                tpe: {type: Object, value: 'page', notify: true, observer: 'typeChanged'}
-            },
-
-            doValidate: function() {
-                // Validate the entire form to see if we should enable the `Submit` button.
-                this.$.formSubmit.disabled = !this.$.demoform.validate();
-            },
-
-            typeChanged: function() {
-                if (this.tpe && this.tpe.name == 'event') {
-                    this.labelforid = 'Event Data';
-                } else {
-                    this.labelforid = 'Page Name';
-                }
+                pagename: String,
+                action: String,
+                error: String,
+                errorType: String,
+                searchTerm: String,
+                formId: String,
+                formStep: String,
+                formTransactionId: String,
+                tpe: {type: Object, value: 'page', notify: true}
             },
 
             submit: function() {
                 if (this.tpe && this.tpe.name == 'event') {
-                    this.fire('iron-signal', {name: 'businessmonitoring-send-action', data: { action: this.id }});
+                    this.fire('iron-signal', {name: 'businessmonitoring-send-action', data: { action: this.action }});
+                } else if (this.tpe && this.tpe.name == 'error') {
+                    this.fire('iron-signal', {name: 'businessmonitoring-send-error-message', data: { error: this.error, errorType: this.errorType}});
+                } else if (this.tpe && this.tpe.name == 'search') {
+                    this.fire('iron-signal', {name: 'businessmonitoring-send-search-action', data: { searchTerm: this.searchTerm }});
+                } else if (this.tpe && this.tpe.name == 'form') {
+                    this.fire('iron-signal', {name: 'businessmonitoring-send-form-step', data: { formId: this.formId, formStep: this.formStep, formStatus: this.formStatus, transactionId: this.transactionId, formOutcome: this.formOutcome }});
                 } else {
-                    this.fire('iron-signal', {name: 'businessmonitoring-send-page-visit', data: { category: this.category, pagename: this.id}});
+                    this.fire('iron-signal', {name: 'businessmonitoring-send-page-visit', data: { category: this.category, pagename: this.pagename}});
                 }
+            },
 
+            isPage: function(name) {
+                return (name === 'page');
+            },
 
+            isEvent: function(name) {
+                return (name === 'event');
+            },
 
-            }
+            isError: function(name) {
+                return (name === 'error');
+            },
+
+            isSearch: function(name) {
+                return (name === 'search');
+            },
+
+            isForm: function(name) {
+                return (name === 'form');
+            },
         });
     </script>
 </dom-module>
