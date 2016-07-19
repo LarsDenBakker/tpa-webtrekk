@@ -4,16 +4,33 @@
 
 <!--
 
-`tpa-webtrekk` is for connecting your applications web analytics iron-signal events to WebTrekk
+A component for connecting your applications web analytics iron-signal events to WebTrekk.
+Your application needs to add the `<tpa-webtrekk>` component at least ones. To track behavior you don't need
+to add the `<tpa-webtrekk>` component, instead you add `WebtrekkBehavior` to your own component. An example:
 
-    <tpa-webtrekk></tpa-webtrekk>
+    <link rel="import" href="../tpa-webtrekk-behavior.html">
 
-Example:
+    <dom-module id="my-component">
+        <template>...</template>
+        <script>
 
-    <tpa-webtrekk></tpa-webtrekk>
+            Polymer({
+                is:"my-component",
+                behaviors: [WebtrekkBehavior],
+
+                properties: {
+                },
+
+                awesomeEvent: function() {
+                    //you can use the Webtrekk Behavior in your functions
+                    this.webtrekkActionEvent('something awesome happened');
+                }
+        </script>
+    </dom-module>
 
 @element tpa-webtrekk
 @demo demo/index.html
+@see tpa-webtrekk-behavior.html
 -->
 <dom-module id="tpa-webtrekk">
     <template>

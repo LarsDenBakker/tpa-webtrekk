@@ -11,6 +11,7 @@
 <link rel="import" href="../../paper-card/paper-card.html">
 
 <link rel="import" href="../tpa-webtrekk.html">
+<link rel="import" href="../tpa-webtrekk-behavior.html">
 
 <dom-module id="tpa-webtrekk-form">
     <template>
@@ -25,7 +26,7 @@
                 Use the browsers developer tools to monitor net traffic for monitoring calls going to WebTrekk
             </div>
 
-            <form is="iron-form" id="demoform" method="get" action="/" on-change="doValidate">
+            <form is="iron-form" id="demoform" method="get" action="/">
 
                 <div class="card-content">
 
@@ -34,7 +35,7 @@
                         <paper-radio-button name="event">Action / Event</paper-radio-button>
                         <paper-radio-button name="error">Error</paper-radio-button>
                         <paper-radio-button name="search">Search Action</paper-radio-button>
-                        <paper-radio-button name="form">Search Action</paper-radio-button>
+                        <paper-radio-button name="form">Form Step</paper-radio-button>
                     </paper-radio-group>
 
                     <template is="dom-if" if="{{isPage(tpe.name)}}" restamp="true">
@@ -72,6 +73,7 @@
 
         Polymer({
             is:"tpa-webtrekk-form",
+            behaviors: [WebtrekkBehavior],
 
             properties: {
                 category: String,
@@ -88,15 +90,15 @@
 
             submit: function() {
                 if (this.tpe && this.tpe.name == 'event') {
-                    this.fire('iron-signal', {name: 'businessmonitoring-send-action', data: { action: this.action }});
+                    this.webtrekkActionEvent(this.action);
                 } else if (this.tpe && this.tpe.name == 'error') {
-                    this.fire('iron-signal', {name: 'businessmonitoring-send-error-message', data: { error: this.error, errorType: this.errorType}});
+                    this.webtrekkError(this.error, this.errorType);
                 } else if (this.tpe && this.tpe.name == 'search') {
-                    this.fire('iron-signal', {name: 'businessmonitoring-send-search-action', data: { searchTerm: this.searchTerm }});
+                    this.webtrekkSearchAction(this.searchTerm);
                 } else if (this.tpe && this.tpe.name == 'form') {
-                    this.fire('iron-signal', {name: 'businessmonitoring-send-form-step', data: { formId: this.formId, formStep: this.formStep, formStatus: this.formStatus, transactionId: this.transactionId, formOutcome: this.formOutcome }});
+                    this.webtrekkFormStep(this.formId, this.formStep, this.formStatus, this.transactionId, this.formOutcome);
                 } else {
-                    this.fire('iron-signal', {name: 'businessmonitoring-send-page-visit', data: { category: this.category, pagename: this.pagename}});
+                    this.webtrekkPageload(this.category, this.pagename);
                 }
             },
 
