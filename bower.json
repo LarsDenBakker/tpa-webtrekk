@@ -26,7 +26,8 @@
     "tests"
   ],
   "dependencies": {
-    "iron-signals": "PolymerElements/iron-signals#^1.0.3"
+    "iron-signals": "PolymerElements/iron-signals#^1.0.3",
+    "tpa-web-analytics": "https://github.com/ING-Group/tpa-web-analytics.git"
   },
   "devDependencies": {
     "iron-component-page": "polymerelements/iron-component-page#^1.0.0",

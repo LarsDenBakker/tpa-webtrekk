@@ -11,7 +11,7 @@
 <link rel="import" href="../../paper-card/paper-card.html">
 
 <link rel="import" href="../tpa-webtrekk.html">
-<link rel="import" href="../tpa-webtrekk-behavior.html">
+<link rel="import" href="../../tpa-web-analytics/tpa-web-analytics.html">
 
 <dom-module id="tpa-webtrekk-form">
     <template>
@@ -73,7 +73,7 @@
 
         Polymer({
             is:"tpa-webtrekk-form",
-            behaviors: [WebtrekkBehavior],
+            behaviors: [WebAnalyticsBehavior],
 
             properties: {
                 category: String,
@@ -90,15 +90,15 @@
 
             submit: function() {
                 if (this.tpe && this.tpe.name == 'event') {
-                    this.webtrekkActionEvent(this.action);
+                    this.webAnalyticsActionEvent(this.action);
                 } else if (this.tpe && this.tpe.name == 'error') {
-                    this.webtrekkError(this.error, this.errorType);
+                    this.webAnalyticsError(this.error, this.errorType);
                 } else if (this.tpe && this.tpe.name == 'search') {
-                    this.webtrekkSearchAction(this.searchTerm);
+                    this.webAnalyticsSearchAction(this.searchTerm);
                 } else if (this.tpe && this.tpe.name == 'form') {
-                    this.webtrekkFormStep(this.formId, this.formStep, this.formStatus, this.transactionId, this.formOutcome);
+                    this.webAnalyticsFormStep(this.formId, this.formStep, this.formStatus, this.transactionId, this.formOutcome);
                 } else {
-                    this.webtrekkPageload(this.category, this.pagename);
+                    this.webAnalyticsPageload(this.category, this.pagename);
                 }
             },
 
