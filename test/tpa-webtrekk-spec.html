@@ -19,7 +19,7 @@
 <body>
 <test-fixture id="fixture">
   <template>
-    <tpa-webtrekk></tpa-webtrekk>
+    <tpa-webtrekk track-id="123456789123456789" track-domain="monitor.test.org" domain="www.test.org"></tpa-webtrekk>
   </template>
 </test-fixture>
 
@@ -37,24 +37,31 @@
     });
 
     it("should call Webtrekk sendinfo after a signal", sinon.test(function(){
-      var stub = this.stub($el.wt, "sendinfo");
-      $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test' }});
-      sinon.assert.calledOnce(stub);
+      flush(function() {
+        var stub = this.stub($el.wt, "sendinfo");
+        $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test'}});
+        sinon.assert.calledOnce(stub);
+      });
     }));
 
     it("should call Webtrekk sendinfo with different pagenames for different page signals", sinon.test(function(){
-      var stub = this.stub($el.wt, "sendinfo");
+      flush(function() {
+        var stub = this.stub($el.wt, "sendinfo");
 
-      $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test' }});
-      $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test2' }});
+        $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test'}});
+        $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test2'}});
 
-      sinon.assert.calledWith(stub, {contentId: "tpa:demo:test"});
-      sinon.assert.calledWith(stub, {contentId: "tpa:demo:test2"});
-      sinon.assert.calledTwice(stub);
-      stub.restore();
+        sinon.assert.calledWith(stub, {contentId: "tpa:demo:test"});
+        sinon.assert.calledWith(stub, {contentId: "tpa:demo:test2"});
+        sinon.assert.calledTwice(stub);
+        stub.restore();
+      });
+
     }));
 
     it("should call Webtrekk sendinfo with different category for different category signals", sinon.test(function(){
+
+      flush(function() {
       var stub = this.stub($el.wt, "sendinfo");
 
       $el.fire('iron-signal', {name: 'event-pageload', data: {category: 'demo', pagename: 'test' }});
@@ -63,7 +70,8 @@
       sinon.assert.calledWith(stub, {contentId: "tpa:demo:test"});
       sinon.assert.calledWith(stub, {contentId: "tpa:demo2:test"});
       sinon.assert.calledTwice(stub);
-    }));
+        });
+      }));
 
   });
 </script>

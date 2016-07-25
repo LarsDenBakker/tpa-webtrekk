@@ -47,28 +47,41 @@ An example:
 
     (function() {
 
-        webtrekkConfig = {
-            trackId: "105490315397978", //this might be different per app/country/...
-            trackDomain: "mon.ingservices.nl", //this might be different per app/country/...
-            domain: "www.tpabootstrap.net", //this might be different per app/country/...
-            cookie: "1",
-            tabBrowsing: true,
-            execCDB: false,
-            execRTA: false
-        };
-
         /**
          * The initialized WebTrekk class for communicating events
          */
-        var wt = new webtrekkV3({
-            linkTrack: "link",
-            linkTrackAttribute: "id",
-            linkTrackDownloads: "zip;pdf;doc"
-        });
+        var wt = undefined;
 
         Polymer({
 
             is: "tpa-webtrekk",
+
+            properties: {
+                trackId: String,
+                trackDomain: String,
+                domain: String
+            },
+
+            ready: function () {
+                if (!wt) {
+                    console.log('defining wt');
+                    window.webtrekkConfig = {
+                        trackId: this.trackId.toString(),
+                        trackDomain: this.trackDomain.toString(),
+                        domain: this.domain.toString(),
+                        cookie: "1",
+                        tabBrowsing: true,
+                        execCDB: false,
+                        execRTA: false
+                    };
+
+                    wt = new webtrekkV3({
+                        linkTrack: "link",
+                        linkTrackAttribute: "id",
+                        linkTrackDownloads: "zip;pdf;doc"
+                    });
+                }
+            },
 
             onPageVisit: function (data) {
                 wt.contentId = "tpa:" + data.detail.category + ":" + data.detail.pagename;
