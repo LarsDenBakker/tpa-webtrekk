@@ -84,7 +84,7 @@ An example:
             },
 
             onPageVisit: function (data) {
-                wt.contentId = "tpa:" + data.detail.category + ":" + data.detail.pagename;
+                wt.contentId = data.detail.category + ":" + data.detail.pagename;
                 wt.sendinfo();
             },
 
@@ -108,7 +108,7 @@ An example:
 
             //The configuration of the parameters in this function is specific for NL...
             onFormStep: function (data) {
-                wt.contentId = "tpa:" + data.detail.formId + ":" + data.detail.formId + ":" + data.detail.formStep
+                wt.contentId = data.detail.formId + ":" + data.detail.formId + ":" + data.detail.formStep
                 wt.product = data.detail.formId
                 wt.productQuantity = wt.orderValue = 1
                 wt.productStatus = data.detail.formStatus //Possible values should only be 'view' for starting the form and 'conf' for succesfully finishing the form
